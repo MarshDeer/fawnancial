@@ -1,0 +1,365 @@
+/* Font Definition ---------------------------------------------------------- */
+@font-face {
+	font-family: 'Inter';
+	src: url('Inter.ttf') format('truetype');
+}
+
+/* Global Elements ---------------------------------------------------------- */
+::selection {
+	background: var(--colorText);
+	color: var(--colorBg);
+}
+
+body {
+	background: var(--colorBg);
+	color: var(--colorText);
+	margin: 0;
+	font-family: 'Inter', sans-serif;
+	display: grid;
+	grid-template-rows: 1fr auto;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.up,
+.down {
+	display: flex;
+	align-items: center;
+	color: var(--colorText);
+}
+	
+	.up { --colorText: var(--colorUp);}
+	.down { --colorText: var(--colorDown);}
+
+a {
+	color: var(--colorText);
+	text-decoration: underline dotted 1px var(--colorText);
+	border-radius: 3px;
+	transition: .2s all;
+}
+	
+	a:where(:hover, :focus) {
+		color: var(--colorBg);
+		background: var(--colorText);
+		background-radius: 3px;
+	}
+
+h1,
+p {
+	margin: 0;
+}
+
+button {
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	font-family: inherit;
+	transition: .2s all;
+}
+
+.buttonsContainer {
+	width: fit-content;
+	opacity: 0;
+	transition: .2s all;
+}
+	
+	.buttonsContainer:where(:hover, :focus) {
+		opacity:1
+	}
+
+.buttonsContainer button {
+	width: 100%;
+	height: 100%;
+	opacity: 1;
+}
+	
+	.buttonsContainer button:not(:where(:hover, :focus)) {
+		opacity: .5;
+	}
+	
+.buttonClose {
+	position: absolute;
+	inset: 0 0 auto auto;
+}
+
+#buttonNewTicker,
+#buttonShowSettings {
+	width: var(--fontSize);
+}
+
+/* Tickers ------------------------------------------------------------------ */
+main {
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.buttonsContainer {
+	display: flex;
+	width: fit-content;
+	height: fit-content;
+}
+
+#areaTickers {
+	font-size: var(--fontSize);
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto;
+	max-height: 100%;
+}
+
+.tickerContainer {
+	position: relative;
+	width: 100%;
+	transition: .2s all;
+}
+	
+	#areaTickers:where(:hover, :focus) .tickerContainer:not(:where(:hover, :focus)) { opacity: .5;}
+	.tickerContainer:hover { cursor: zoom-in;}
+
+.tickerContainer .buttonsContainer {
+	display: grid;
+	grid-template-rows: repeat(3, calc(100% / 3));
+	height: 100%;
+	aspect-ratio: 1/3;
+	position: absolute;
+	inset: 0 0 auto auto;
+	background: var(--colorBg);
+	box-shadow: 0 -5px 5px 5px var(--colorBg);
+}
+	
+	.tickerContainer:where(:hover,:focus) .buttonsContainer {
+		opacity: 1;
+	}
+
+.tickerContainer .change {
+	--width: 7ch;
+	display: grid;
+	grid-template-columns: 1ch var(--width);
+	justify-self: right;
+}
+	
+	.tickerContainer .change[slot=slotChangePercent] {
+		--width: 6ch;
+	}
+
+.tickerContainer .change span {
+	justify-self: right;
+}
+
+.tickerContainer .arrow {
+	width: 100%;
+}
+	
+	.tickerContainer .down .arrow {
+		transform: rotateZ(180deg);
+	}
+	
+	.tickerContainer .change:not(:where(.up, .down)) .arrow {
+		--colorText: transparent;
+	}
+
+#timerElement {
+	position: absolute;
+	inset: auto 0 0 auto;
+	font-size: 1rem;
+	margin: .5em .5ch;
+	cursor: pointer;
+}
+
+/* Exchanges ---------------------------------------------------------------- */
+footer {
+	width: 100%;
+	height: fit-content;
+	border-top: 1px solid var(--colorText);
+	font-size: calc(var(--fontSize) / 2);
+	display: flex;
+	overflow-x: auto;
+	align-items: center;
+}
+
+#areaExchanges {
+	display: flex;
+}
+
+.exchangeContainer {
+	text-transform: uppercase;
+	border-right: 1px solid var(--colorText);
+	padding: .2em .5ch;
+	position: relative;
+}
+
+.exchangeContainer span {
+	padding: 0 .5ch;
+	display: inline;
+}
+	
+	.exchangeContainer [slot=slotStatus] {
+		border-left: 1px dotted color-mix(in lab, var(--colorText), var(--colorBg));
+	}
+
+.exchangeContainer .buttonClose {
+	width: 30px;
+}
+	
+	.exchangeContainer:not(:hover) .buttonClose {
+		opacity: 0;
+	}
+
+#buttonNewExchange {
+	width: 60px;
+}
+
+/* Dialogs ------------------------------------------------------------------ */
+dialog[open] {
+	background: var(--colorBg);
+	border: 1px solid var(--colorText);
+	border-radius: var(--cornerRadius);
+	color: var(--colorText);
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	align-items: center;
+	box-shadow: 0 0 10px color-mix(in lab, var(--colorBg), #000 50%);
+}
+	
+	dialog::backdrop {
+		backdrop-filter: blur(5px) brightness(.9);
+	}
+
+
+dialog button:not(.buttonClose) {
+	background: var(--colorBg);
+	outline: 1px solid var(--colorText);
+	color: var(--colorText);
+	padding: .5em .5ch;
+	font-size: larger;
+	width: fit-content;
+	border-radius: var(--cornerRadius);
+}
+
+dialog button:not(.buttonClose):where(:hover, :focus) {
+	background: var(--colorText);
+	color: var(--colorBg);
+}
+
+dialog .buttonClose {
+	width: 30px;
+}
+
+input:where([type=text], [type=number]),
+select {
+	background: var(--colorBg);
+	outline: 1px solid var(--colorText);
+	border: 0;
+	transition: .2s all;
+	border-radius: var(--cornerRadius);
+	text-align: center;
+	color: var(--colorText);
+	font-family: inherit;
+	text-transform: uppercase;
+	font-size: larger;
+}
+	
+	input:where([type=text], [type=number]):where(:hover, :focus),
+	select:hover {
+		outline: 3px solid var(--colorText)
+	}
+	
+	input[type=number] {
+		max-width: 8ch;
+	}
+
+#inputAddTicker,
+#inputAddExchange,
+#inputCrypto {
+	background: var(--colorBg);
+	border: 1px solid var(--colorText);
+	outline: 0;
+	border-radius: var(--cornerRadius);
+	font-size: var(--fontSize);
+	width: 8ch;
+	text-align: center;
+	color: var(--colorText);
+	font-family: inherit;
+	text-transform: uppercase;
+}
+	
+	#inputAddTicker:where(:hover, :focus),
+	#inputAddExchange:where(:hover, :focus),
+	#inputCrypto:hover {
+		outline: 5px solid var(--colorText);
+	}
+
+#inputCrypto {
+	width: 10ch;
+}
+
+#inputCrypto option {
+	font-family: inherit;
+	font-size: 1rem;
+}
+
+label {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: .2em;
+}
+
+fieldset {
+	border: 1px solid var(--colorText);
+	border-radius: var(--cornerRadius);
+	display: grid;
+	gap: 1ch 1em;
+}
+
+fieldset legend {
+	padding: 0 1ch;
+	font-weight: bold;
+}
+
+#fieldsetTheme,
+#fieldsetBackup {
+	grid-template-columns: 1fr 1fr;
+}
+
+#tradingViewContainer {
+	width: 80vw;
+	height: 80vh;
+}
+
+#inputAddTickerSearch {
+	font-size: calc(var(--fontSize) / 4);
+	width: calc(4 * 8ch - 4px); /* TODO: Where do those 4px come from?*/
+	color: color-mix(in lab, var(--colorText), var(--colorBg));
+}
+
+/* Errors ------------------------------------------------------------------- */
+#areaErrors {
+	width: fit-content;
+	display: flex;
+	flex-direction: column;
+	position: fixed;
+	inset: auto 20px 20px auto;
+	z-index: 1;
+	gap: 10px;
+	align-items: end;
+}
+
+#areaErrors .errorPopup {
+	background: var(--colorDown);
+	color: var(--colorBg);
+	width: fit-content;
+	padding: .5em 1ch;
+	border-radius: var(--cornerRadius);
+	cursor: pointer;
+	animation: .5s errorFade 4.5s forwards;
+}
+
+@keyframes errorFade {
+	from {opacity: 1;}
+	to {opacity: 0;}
+}
