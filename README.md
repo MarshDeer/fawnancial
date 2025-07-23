@@ -2,6 +2,7 @@
 Dead simple web app using vanilla Javascript to display financial tickers (stock,
 cryptocurrencies) using the Finnhub API. Designed to have next to no
 dependencies so that it can be run locally on any modern web browser.
+![Screenshow](scr.png)
 
 ## Disclosure
 This app was developed on commission and this repository largely only exists to
